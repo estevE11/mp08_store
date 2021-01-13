@@ -6,10 +6,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
     // database version
-    private static final int database_VERSION = 1;
+    private static final int database_VERSION = 2;
 
     // database name
-    private static final String database_NAME = "toDoListDataBase";
+    private static final String database_NAME = "store";
 
     public DBHelper(Context context) {
         super(context, database_NAME, null, database_VERSION);
@@ -18,7 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TODOLIST =
-                "CREATE TABLE store ( code TEXT NOT NULL PRIMARY KEY, " +
+                "CREATE TABLE store ( code TEXT UNIQUE NOT NULL PRIMARY KEY, " +
                         "description TEXT NOT NULL," +
                         "family TEXT CHECK(family='SOFTWARE' OR family='HARDWARE ' OR family='ALTRES')," +
                         "price FLOAT(1000000, 2) NOT NULL," +
