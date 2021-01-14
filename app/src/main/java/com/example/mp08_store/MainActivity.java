@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
         this.db = new DBDatasource(this);
 
-        this.db.addItem("T01", "Tornillo", "HARDWARE", 10.0, 10);
+        long id= this.db.addItem("T01", "Tornillo", "HARDWARE", 10f, 10);
+        Toast.makeText(this, "" + id, Toast.LENGTH_SHORT).show();
 
         Cursor c = this.db.getFullStore();
 

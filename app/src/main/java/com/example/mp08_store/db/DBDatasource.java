@@ -61,13 +61,13 @@ public class DBDatasource {
     // Funciones de manipualación de datos
     // ******************
 
-    public long addItem(String code,  String desc, String family, double price, int stock) {
+    public long addItem(String code,  String desc, String family, float price, int stock) {
         // Creem una nova tasca i retornem el id crear per si el necessiten
         ContentValues values = new ContentValues();
         values.put("code", code);
         values.put("description", desc);
         values.put("family", family);
-        values.put("price", price);  // Forcem 0 pq si s'està creant la tasca no pot estar finalitzada
+        values.put("price", price);
         values.put("stock", stock);
 
         return dbW.insert("store",null,values);
