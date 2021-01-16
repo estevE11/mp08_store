@@ -1,16 +1,18 @@
 package com.example.mp08_store;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -18,16 +20,18 @@ import android.widget.Toast;
 
 import com.example.mp08_store.db.DBDatasource;
 
-import java.util.Arrays;
-
 public class MainActivity extends AppCompatActivity {
 
     private DBDatasource db;
+    private ItemListAdapter listAdapter;
+
+    private String searchFilter = "";
+    private boolean stockFilter = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setTitle("Buenas");
+        this.setTitle("Megastore");
         setContentView(R.layout.activity_main);
 
         this.db = new DBDatasource(this);
@@ -35,19 +39,77 @@ public class MainActivity extends AppCompatActivity {
         long id = this.db.addItem("B02", "Boligrafo Bic", "ALTRES", .5f, -1);
 
         Cursor c = this.db.getFilteredStore("", false);
-        ItemListAdapter listAdapter = new ItemListAdapter(this, c);
+        this.listAdapter = new ItemListAdapter(this, c);
         ListView lst = (ListView)this.findViewById(R.id.lv_items);
-        lst.setAdapter(listAdapter);
+        lst.setAdapter(this.listAdapter);
+
+    }
+
+    private void load() {
+        String filter_info = "All";
+        boolean hasSearch = !this.searchFilter.isEmpty();
+        if(hasSearch || this.stockFilter) {
+            filter_info = (hasSearch ? '"' + this.searchFilter + '"' : "") + (this.stockFilter ? ((hasSearch ? " and " : "") + "Out of stock") : "");
+        }
+        ((TextView)this.findViewById(R.id.text_filters)).setText(filter_info);
+        this.load(this.searchFilter, this.stockFilter);
     }
 
     private void load(String desc, boolean stock) {
         Cursor c = this.db.getFilteredStore(desc, stock);
-
+        this.listAdapter.changeCursor(c);
+        this.listAdapter.notifyDataSetChanged();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.button_filter:
+                stockFilter = !stockFilter;
+                load();
+                return false;
+            case R.id.button_search:
+                this.openDialogSearch();
+                return false;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void openDialogSearch() {
+        AlertDialog ad;
+
+        ad = new AlertDialog.Builder(this).create();
+        ad.setTitle("");
+        ad.setMessage("Please insert the current currency value");
+
+        // Ahora forzamos que aparezca el editText
+        final EditText edtValor = new EditText(this);
+        ad.setView(edtValor);
+
+        ad.setButton(AlertDialog.BUTTON_POSITIVE, "Insert", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String val = "";
+                try {
+                    val = edtValor.getText().toString();
+                    searchFilter = val;
+                    load();
+                } catch(Exception e) {
+                    Toast.makeText(getApplicationContext(), "Input needs to be a number!", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        ad.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // no fem res.
+            }
+        });
+        ad.show();
     }
 }
 
@@ -70,8 +132,11 @@ class ItemListAdapter extends SimpleCursorAdapter {
         TextView edt = (TextView)item.findViewById(R.id.text_price);
         edt.setText(c.getString(4) + "€");
 
-        item.setBackgroundColor(Color.parseColor("#ffffff"));
-
+        if(c.getFloat(5) > 0) {
+            item.setBackgroundColor(Color.parseColor("#ffffff"));
+        } else {
+            item.setBackgroundColor(Color.parseColor("#ffcccc"));
+        }
         return(item);
     }
 }

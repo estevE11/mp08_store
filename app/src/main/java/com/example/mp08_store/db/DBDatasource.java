@@ -51,7 +51,7 @@ public class DBDatasource {
         String extra = "";
         boolean desc = !search.isEmpty();
         if(!search.isEmpty() || stock) {
-            extra = " where " + (desc ? "description like '%" + search + "%'" : "") + (stock ? ( desc? " and " : "") + "stock > 0" : "");
+            extra = " where " + (desc ? "description like '%" + search + "%'" : "") + (stock ? ( desc? " and " : "") + "stock < 1" : "");
         }
         return dbR.rawQuery("select _id, code, description, family, price, stock from store" + extra,null);
     }
