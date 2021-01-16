@@ -42,19 +42,18 @@ public class DBDatasource {
     // ******************
     public Cursor getFullStore() {
         // Retorem totes les tasques
-        return dbR.query(STORE_TABLE_NAME, new String[]{STORE_CODE,STORE_DESCRIPTION,STORE_FAMILY,STORE_STOCK,STORE_PRICE},
+        return dbR.query(STORE_TABLE_NAME, new String[]{"_id", STORE_CODE,STORE_DESCRIPTION,STORE_FAMILY,STORE_STOCK,STORE_PRICE},
                 null, null,
                 null, null, STORE_CODE);
     }
 
-    public Cursor getFilteredStore(boolean desc, boolean inStock) {
-        String optional = "";
-        if(desc || inStock) {
-            optional = "WHERE ";
-            optional += (desc ? "description IS NOT NULL" : "");
-            optional += (desc && inStock ? " OR " : "") + (inStock ? "stock < 1" : "");
+    public Cursor getFilteredStore(String search, boolean stock) {
+        String extra = "";
+        boolean desc = !search.isEmpty();
+        if(!search.isEmpty() || stock) {
+            extra = " where " + (desc ? "description like '%" + search + "%'" : "") + (stock ? ( desc? " and " : "") + "stock > 0" : "");
         }
-        return dbR.rawQuery("select code, description, family, price, stock from store " + (optional.length() > 0 ? optional : ""),null);
+        return dbR.rawQuery("select _id, code, description, family, price, stock from store" + extra,null);
     }
 
     // ******************

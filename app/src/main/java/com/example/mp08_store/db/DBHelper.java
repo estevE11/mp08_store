@@ -20,7 +20,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TODOLIST =
                 "CREATE TABLE store ( _id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "code TEXT NOT NULL," +
+                        "code TEXT UNIQUE NOT NULL," +
                         "description TEXT NOT NULL," +
                         "family TEXT CHECK(family='SOFTWARE' OR family='HARDWARE' OR family='ALTRES')," +
                         "price FLOAT(1000000, 2) NOT NULL," +
