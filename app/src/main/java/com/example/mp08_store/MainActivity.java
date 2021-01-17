@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mp08_store.db.DBDatasource;
+
+import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -37,12 +40,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         this.db = new DBDatasource(this);
 
-        long id = this.db.addItem("B02", "Boligrafo Bic", "ALTRES", .5f, -1);
-
         Cursor c = this.db.getFilteredStore("", false);
         this.listAdapter = new ItemListAdapter(this, c);
         ListView lst = (ListView)this.findViewById(R.id.lv_items);
         lst.setAdapter(this.listAdapter);
+        lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                openEditItemActivity(position);
+            }
+        });
 
         findViewById(R.id.img_btn_filter_remove).setOnClickListener(this);
     }
@@ -77,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_search:
                 this.openDialogSearch();
                 return false;
-            case R.id.button_add:
+            case R.id.button_save:
                 this.openCreateItemActivity();
                 return false;
         }
@@ -89,8 +96,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
-    private void openEditItemActivity() {
-
+    private void openEditItemActivity(int id) {
+        Bundle b = new Bundle();
+        b.putInt("_id", id);
+        Intent intent = new Intent(getApplicationContext(), ItemManagerActivity.class);
+        intent.putExtras(b);
+        startActivity(intent);
     }
 
     private void openDialogSearch() {
@@ -143,7 +154,7 @@ class ItemListAdapter extends SimpleCursorAdapter {
     public ItemListAdapter(Context context, Cursor c) {
         super(context, R.layout.layout_main_lv_item, c,
                 new String[]{"code", "description", "family", "price", "stock"}, // from
-                new int[]{R.id.text_code, R.id.text_desc, R.id.text_family, R.id.text_price, R.id.text_stock},
+                new int[]{R.id.text_code, R.id.text_desc, R.id.text_family, R.id.text_price_final, R.id.text_stock},
                 1); // to
     }
 
@@ -153,8 +164,15 @@ class ItemListAdapter extends SimpleCursorAdapter {
 
         Cursor c = (Cursor) getItem(position);
 
-        TextView edt = (TextView)item.findViewById(R.id.text_price);
-        edt.setText(c.getString(4) + "€");
+        float price = Float.parseFloat(c.getString(4));
+        TextView text_price_final = (TextView)item.findViewById(R.id.text_price_final);
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        float final_price = Float.parseFloat(df.format(price*1.21));
+        text_price_final.setText(final_price + "€");
+
+        TextView text_price = (TextView)item.findViewById(R.id.text_price);
+        text_price.setText(price + "€");
 
         if(c.getFloat(5) > 0) {
             item.setBackgroundColor(Color.parseColor("#ffffff"));

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="visible"
     tools:context=".ItemManagerActivity">
 
     <TextView
@@ -30,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:ems="15"
-        android:inputType="number"
+        android:inputType="numberSigned|number"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -92,6 +93,7 @@
         android:layout_marginTop="50dp"
         android:dropDownWidth="match_parent"
         android:entries="@array/familyTypes"
+        android:visibility="visible"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/input_stock" />
@@ -109,16 +111,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.90" />
-
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="Save"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/input_spinner_family" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

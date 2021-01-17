@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+
 public class DBDatasource {
     public static final String STORE_TABLE_NAME = "store";
     public static final String STORE_CODE = "code";
@@ -73,6 +75,14 @@ public class DBDatasource {
         return dbR.rawQuery("select _id, code, description, family, price, stock from store" + extra,null);
     }
 
+    public Cursor getItem(int id) {
+        /*Cursor c = dbR.query(STORE_TABLE_NAME, new String[]{"_id", STORE_CODE,STORE_DESCRIPTION,STORE_FAMILY,STORE_STOCK,STORE_PRICE},
+                "_id=?", new String[]{String.valueOf(id)},
+                null, null, STORE_CODE);*/
+
+        return dbR.rawQuery("select _id, code, description, family, price, stock from store where _id=" + (id+1),null);
+    }
+
     // ******************
     // Funciones de manipualación de datos
     // ******************
@@ -88,37 +98,15 @@ public class DBDatasource {
 
         return dbW.insert("store",null,values);
     }
-/*
-    public void taskUpdate(long id, String title, String description, int level) {
-        // Modifiquem els valors de las tasca amb clau primària "id"
+
+    public void updateItem(int id, String desc, String family, float price, int stock) {
+        // Creem una nova tasca i retornem el id crear per si el necessiten
         ContentValues values = new ContentValues();
-        values.put(TODOLIST_TITLE, title);
-        values.put(TODOLIST_DESCRIPCION, description);
-        values.put(TODOLIST_LEVEL,level);
-        values.put(TODOLIST_DONE,0);  // Forcem 0 pq si s'està creant la tasca no pot estar finalitzada
+        values.put("description", desc);
+        values.put("family", family);
+        values.put("price", price);
+        values.put("stock", stock);
 
-        dbW.update(table_TODOLIST,values, TODOLIST_ID + " = ?", new String[] { String.valueOf(id) });
+        dbW.update("store", values, "_id=?", new String[] { String.valueOf(id+1) });
     }
-
-    public void taskDelete(long id) {
-        // Eliminem la task amb clau primària "id"
-        dbW.delete(table_TODOLIST,TODOLIST_ID + " = ?", new String[] { String.valueOf(id) });
-    }
-
-    public void taskPending(long id) {
-        // Modifiquem al estat de pendent la task indicada
-        ContentValues values = new ContentValues();
-        values.put(TODOLIST_DONE,0);
-
-        dbW.update(table_TODOLIST,values, TODOLIST_ID + " = ?", new String[] { String.valueOf(id) });
-    }
-
-    public void taskCompleted(long id) {
-        // Modifiquem al estat de pendent la task indicada
-        ContentValues values = new ContentValues();
-        values.put(TODOLIST_DONE,1);
-
-        dbW.update(table_TODOLIST,values, TODOLIST_ID + " = ?", new String[] { String.valueOf(id) });
-    }*/
-
 }

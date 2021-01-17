@@ -16,7 +16,7 @@
         android:title="Item"
         app:showAsAction="always" />
     <item
-        android:id="@+id/button_add"
+        android:id="@+id/button_save"
         android:icon="@android:drawable/ic_menu_add"
         android:title="Item"
         app:showAsAction="always" />
