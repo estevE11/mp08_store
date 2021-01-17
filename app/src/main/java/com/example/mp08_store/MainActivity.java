@@ -101,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         b.putStringArrayList("selected", this.selected);
         c.setExtras(b);
 
+        findViewById(R.id.img_btn_filter_remove).setVisibility((!desc.isEmpty() || stock) ? View.VISIBLE : View.INVISIBLE);
+
         this.listAdapter.changeCursor(c);
         this.listAdapter.notifyDataSetChanged();
     }
