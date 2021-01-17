@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,9 +55,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(!inSelection)openEditItemActivity(position);
+                if(!inSelection)openEditItemActivity((int)id);
                 else {
-                    toggleSelected(position);
+                    toggleSelected((int)id);
                     if(selected.size() < 1) {
                         inSelection = false;
                         invalidateOptionsMenu();
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 if(!inSelection) {
                     selected = new ArrayList<String>();
-                    toggleSelected(position);
+                    toggleSelected((int)id);
                     inSelection = true;
                     invalidateOptionsMenu();
                 }
@@ -144,6 +145,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_save:
                 this.openCreateItemActivity();
                 return false;
+            case R.id.button_delete:
+                this.deleteSelectedItems();
+                return false;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -159,6 +163,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(getApplicationContext(), ItemManagerActivity.class);
         intent.putExtras(b);
         startActivity(intent);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void turnOffSelectedMode() {
+        this.inSelection = false;
+        this.selected = new ArrayList<String>();
+        this.load();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void deleteSelectedItems() {
+        for(String it : this.selected) {
+            int id = Integer.parseInt(it.substring(2));
+            this.db.deleteItem(id);
+        }
+        this.turnOffSelectedMode();
     }
 
     private void openDialogSearch() {
@@ -231,13 +251,15 @@ class ItemListAdapter extends SimpleCursorAdapter {
         text_price_final.setText(final_price + "€");
 
         TextView text_price = (TextView)item.findViewById(R.id.text_price);
+        int id = c.getInt(0);
+        text_price.setText(price + "€" + id);
 
         boolean selected = false;
         Bundle b = c.getExtras();
         ArrayList<String> selectedList = b.getStringArrayList("selected");
         if(selectedList != null) {
             for (String it : selectedList) {
-                if (it.equals("id" + position)) {
+                if (it.equals("id" + id)) {
                     selected = true;
                     break;
                 }

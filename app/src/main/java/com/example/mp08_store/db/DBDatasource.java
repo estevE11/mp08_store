@@ -6,6 +6,7 @@ import android.database.Cursor;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 
 public class DBDatasource {
     public static final String STORE_TABLE_NAME = "store";
@@ -79,8 +80,7 @@ public class DBDatasource {
         /*Cursor c = dbR.query(STORE_TABLE_NAME, new String[]{"_id", STORE_CODE,STORE_DESCRIPTION,STORE_FAMILY,STORE_STOCK,STORE_PRICE},
                 "_id=?", new String[]{String.valueOf(id)},
                 null, null, STORE_CODE);*/
-
-        return dbR.rawQuery("select _id, code, description, family, price, stock from store where _id=" + (id+1),null);
+        return dbR.rawQuery("select _id, code, description, family, price, stock from store where _id=" + (id),null);
     }
 
     // ******************
@@ -107,6 +107,10 @@ public class DBDatasource {
         values.put("price", price);
         values.put("stock", stock);
 
-        dbW.update("store", values, "_id=?", new String[] { String.valueOf(id+1) });
+        dbW.update("store", values, "_id=?", new String[] { String.valueOf(id) });
+    }
+
+    public void deleteItem(int id) {
+        dbW.delete("store", "_id=?", new String[] { String.valueOf(id) });
     }
 }

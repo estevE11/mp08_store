@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SQLAndroidSettings">
+    <option name="databases">
+      <map>
+        <entry key="store_E:\dev\android\mp08_store\AndroidSqlEditorDatabases\">
+          <value>
+            <list>
+              <option value="c272a51d" />
+              <option value="/databases/store" />
+              <option value="store" />
+              <option value="store" />
+              <option value="false" />
+              <option value="com.example.mp08_store" />
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="storageVersion" value="2" />
   </component>
 </project>
