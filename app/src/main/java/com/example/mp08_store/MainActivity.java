@@ -1,5 +1,6 @@
 package com.example.mp08_store;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +25,8 @@ import android.widget.Toast;
 import com.example.mp08_store.db.DBDatasource;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -31,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String searchFilter = "";
     private boolean stockFilter = false;
+    private boolean inSelection = false;
+    private ArrayList<String> selected = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,15 +51,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ListView lst = (ListView)this.findViewById(R.id.lv_items);
         lst.setAdapter(this.listAdapter);
         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openEditItemActivity(position);
+                if(!inSelection)openEditItemActivity(position);
+                else {
+                    toggleSelected(position);
+                    if(selected.size() < 1) {
+                        inSelection = false;
+                        invalidateOptionsMenu();
+                    }
+                }
+            }
+        });
+
+        lst.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if(!inSelection) {
+                    selected = new ArrayList<String>();
+                    toggleSelected(position);
+                    inSelection = true;
+                    invalidateOptionsMenu();
+                }
+                return true;
             }
         });
 
         findViewById(R.id.img_btn_filter_remove).setOnClickListener(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void load() {
         String filter_info = "All";
         boolean hasSearch = !this.searchFilter.isEmpty();
@@ -64,17 +93,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.load(this.searchFilter, this.stockFilter);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void load(String desc, boolean stock) {
         Cursor c = this.db.getFilteredStore(desc, stock);
+        Bundle b = new Bundle();
+        b.putStringArrayList("selected", this.selected);
+        c.setExtras(b);
+
         this.listAdapter.changeCursor(c);
         this.listAdapter.notifyDataSetChanged();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void toggleSelected(int id) {
+        String str_id = "id"+id;
+        for(int i = 0; i < this.selected.size(); i++) {
+            String it = this.selected.get(i);
+            if (it.equals(str_id)) {
+                this.selected.remove(i);
+                this.load();
+                return;
+            }
+        }
+        this.selected.add(str_id);
+        this.load();
+    }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        if(this.inSelection) {
+            menu.findItem(R.id.button_delete).setVisible(true);
+        } else {
+            menu.findItem(R.id.button_delete).setVisible(false);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.button_filter:
@@ -117,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ad.setView(edtValor);
 
         ad.setButton(AlertDialog.BUTTON_POSITIVE, "Insert", new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             public void onClick(DialogInterface dialog, int whichButton) {
                 String val = "";
                 try {
@@ -138,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ad.show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.img_btn_filter_remove) {
@@ -172,9 +231,22 @@ class ItemListAdapter extends SimpleCursorAdapter {
         text_price_final.setText(final_price + "€");
 
         TextView text_price = (TextView)item.findViewById(R.id.text_price);
-        text_price.setText(price + "€");
 
-        if(c.getFloat(5) > 0) {
+        boolean selected = false;
+        Bundle b = c.getExtras();
+        ArrayList<String> selectedList = b.getStringArrayList("selected");
+        if(selectedList != null) {
+            for (String it : selectedList) {
+                if (it.equals("id" + position)) {
+                    selected = true;
+                    break;
+                }
+            }
+        }
+
+        if(selected) {
+            item.setBackgroundColor(Color.parseColor("#ccccff"));
+        } else if(c.getFloat(5) > 0) {
             item.setBackgroundColor(Color.parseColor("#ffffff"));
         } else {
             item.setBackgroundColor(Color.parseColor("#ffcccc"));
