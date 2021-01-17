@@ -137,16 +137,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (item.getItemId()) {
             case R.id.button_filter:
                 stockFilter = !stockFilter;
+                this.turnOffSelectedMode();
                 load();
                 return false;
             case R.id.button_search:
                 this.openDialogSearch();
+                this.turnOffSelectedMode();
                 return false;
             case R.id.button_save:
                 this.openCreateItemActivity();
                 return false;
             case R.id.button_delete:
-                this.deleteSelectedItems();
+                this.openDeleteAlert();
                 return false;
         }
         return super.onOptionsItemSelected(item);
@@ -216,6 +218,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ad.show();
     }
 
+    private void openDeleteAlert() {
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        deleteSelectedItems();
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("All selected items will be deleted").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();    }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
@@ -252,7 +275,7 @@ class ItemListAdapter extends SimpleCursorAdapter {
 
         TextView text_price = (TextView)item.findViewById(R.id.text_price);
         int id = c.getInt(0);
-        text_price.setText(price + "€" + id);
+        text_price.setText(price + "€");
 
         boolean selected = false;
         Bundle b = c.getExtras();
