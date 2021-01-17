@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="familyTypes">
+        <item>---</item>
+        <item>HARDWARE</item>
+        <item>SOFTWARE</item>
+        <item>ALTRES</item>
+    </array>
+</resources>

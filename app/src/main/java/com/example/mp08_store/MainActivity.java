@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -75,8 +76,20 @@ public class MainActivity extends AppCompatActivity {
             case R.id.button_search:
                 this.openDialogSearch();
                 return false;
+            case R.id.button_add:
+                this.openCreateItemActivity();
+                return false;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openCreateItemActivity() {
+        Intent intent = new Intent(getApplicationContext(), ItemManagerActivity.class);
+        startActivity(intent);
+    }
+
+    private void openEditItemActivity() {
+
     }
 
     private void openDialogSearch() {
