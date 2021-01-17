@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.example.mp08_store.db.DBDatasource;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private DBDatasource db;
     private ItemListAdapter listAdapter;
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         ListView lst = (ListView)this.findViewById(R.id.lv_items);
         lst.setAdapter(this.listAdapter);
 
+        findViewById(R.id.img_btn_filter_remove).setOnClickListener(this);
     }
 
     private void load() {
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         ad = new AlertDialog.Builder(this).create();
         ad.setTitle("");
-        ad.setMessage("Please insert the current currency value");
+        ad.setMessage("Search filter");
 
         // Ahora forzamos que aparezca el editText
         final EditText edtValor = new EditText(this);
@@ -124,6 +125,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         ad.show();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.img_btn_filter_remove) {
+            this.stockFilter = false;
+            this.searchFilter = "";
+            this.load();
+        }
     }
 }
 
