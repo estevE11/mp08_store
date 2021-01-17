@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Ahora forzamos que aparezca el editText
         final EditText edtValor = new EditText(this);
+        edtValor.setText(this.searchFilter);
         ad.setView(edtValor);
 
         ad.setButton(AlertDialog.BUTTON_POSITIVE, "Insert", new DialogInterface.OnClickListener() {
