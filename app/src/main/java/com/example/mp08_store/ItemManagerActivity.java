@@ -112,8 +112,8 @@ public class ItemManagerActivity extends AppCompatActivity {
         int stock = Integer.parseInt(stock_val);
         float price = Float.parseFloat(price_val);
 
-        if(stock < 1) {
-            ((EditText)findViewById(R.id.input_stock)).setError("Stock must be higher than 0!");
+        if(stock < 0) {
+            ((EditText)findViewById(R.id.input_stock)).setError("Stock must be 0 or higher");
             insert = false;
         }
 
