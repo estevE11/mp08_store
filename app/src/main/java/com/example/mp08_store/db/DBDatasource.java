@@ -47,6 +47,23 @@ public class DBDatasource {
                 null, null, STORE_CODE);
     }
 
+    public String[] getFullStoreCodes() {
+        // Retorem totes les tasques
+        Cursor c = dbR.query(STORE_TABLE_NAME, new String[]{"_id", STORE_CODE},
+                null, null,
+                null, null, STORE_CODE);
+
+        c.moveToFirst();
+
+        String[] cursors = new String[c.getCount()];
+        for(int i = 0; i < cursors.length; i++) {
+            cursors[i] = c.getString(1);
+            c.moveToNext();
+        }
+
+        return cursors;
+    }
+
     public Cursor getFilteredStore(String search, boolean stock) {
         String extra = "";
         boolean desc = !search.isEmpty();
