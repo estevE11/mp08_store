@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.example.mp08_store.db.DBDatasource;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -272,14 +273,15 @@ class ItemListAdapter extends SimpleCursorAdapter {
         float price = Float.parseFloat(c.getString(4));
         TextView text_price_final = (TextView)item.findViewById(R.id.text_price_final);
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        float final_price = Float.parseFloat(df.format(price*1.21));
-        text_price_final.setText(final_price + "€");
+        NumberFormat df = NumberFormat.getCurrencyInstance();
+        float final_price = Float.parseFloat(df.format(price*1.21).substring(1).replaceAll(",", ""));
+        text_price_final.setText(this.formatPrice(final_price) + "€");
 
         TextView text_price = (TextView)item.findViewById(R.id.text_price);
-        int id = c.getInt(0);
-        text_price.setText(price + "€");
+        float formatted_price = Float.parseFloat(df.format(price).substring(1).replaceAll(",", ""));
+        text_price.setText(this.formatPrice(formatted_price) + "€");
 
+        int id = c.getInt(0);
         boolean selected = false;
         Bundle b = c.getExtras();
         ArrayList<String> selectedList = b.getStringArrayList("selected");
@@ -300,5 +302,11 @@ class ItemListAdapter extends SimpleCursorAdapter {
             item.setBackgroundColor(Color.parseColor("#ffcccc"));
         }
         return(item);
+    }
+
+    private String formatPrice(float price) {
+        String[] str_price = String.valueOf(price).split("\\.");
+        if(str_price.length < 2) return str_price[0] + ".00";
+        else return price + (str_price[1].length() == 1 ? "0" : "");
     }
 }

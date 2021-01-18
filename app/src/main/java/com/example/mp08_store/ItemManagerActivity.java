@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.mp08_store.db.DBDatasource;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class ItemManagerActivity extends AppCompatActivity {
 
@@ -125,6 +126,9 @@ public class ItemManagerActivity extends AppCompatActivity {
             if(price <= 0) {
                 input_price.setError("Pice must be higher than 0");
                 insert = false;
+            } else if(price > 99999) {
+                input_price.setError("Pice must not be higher than 99999");
+                insert = false;
             }
         }
 
@@ -158,8 +162,8 @@ public class ItemManagerActivity extends AppCompatActivity {
 
         if(!insert) return null;
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        price = Float.parseFloat(df.format(price));
+        NumberFormat df = NumberFormat.getCurrencyInstance();
+        price = Float.parseFloat(df.format(price).substring(1).replaceAll(",", ""));
 
         if(family.equals("---")) family = null;
 
