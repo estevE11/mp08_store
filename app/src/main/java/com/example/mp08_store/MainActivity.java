@@ -173,6 +173,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void turnOffSelectedMode() {
         this.inSelection = false;
         this.selected = new ArrayList<String>();
+        invalidateOptionsMenu();
         this.load();
     }
 
