@@ -114,14 +114,29 @@ public class ItemManagerActivity extends AppCompatActivity {
         String price_val = input_price.getText().toString();
         String stock_val = input_stock.getText().toString();
 
+        int stock = 0;
+        float price = 0;
+
         if(price_val.isEmpty()) {
             input_price.setError("Price must contain a number!");
             insert = false;
+        } else {
+            price = Float.parseFloat(price_val);
+            if(price <= 0) {
+                input_price.setError("Pice must be higher than 0");
+                insert = false;
+            }
         }
 
         if(stock_val.isEmpty()) {
             input_stock.setError("Price must contain a number!");
             insert = false;
+        } else {
+            stock = Integer.parseInt(stock_val);
+            if(stock < 0 && !editMode) {
+                ((EditText)findViewById(R.id.input_stock)).setError("Stock must be 0 or higher");
+                insert = false;
+            }
         }
 
         if(desc.isEmpty()) {
@@ -142,25 +157,12 @@ public class ItemManagerActivity extends AppCompatActivity {
         }
 
         if(!insert) return null;
-        int stock = Integer.parseInt(stock_val);
-        float price = Float.parseFloat(price_val);
-
-        if(stock < 0 && !editMode) {
-            ((EditText)findViewById(R.id.input_stock)).setError("Stock must be 0 or higher");
-            insert = false;
-        }
-
-        if(price < 0) {
-            input_price.setError("Pice must be higher than 0");
-            insert = false;
-        }
 
         DecimalFormat df = new DecimalFormat("#.##");
         price = Float.parseFloat(df.format(price));
 
         if(family.equals("---")) family = null;
 
-        if(!insert) return null;
         Bundle res = new Bundle();
         res.putString("code", code);
         res.putString("desc", desc);
