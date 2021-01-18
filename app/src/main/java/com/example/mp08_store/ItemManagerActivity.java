@@ -150,6 +150,11 @@ public class ItemManagerActivity extends AppCompatActivity {
             insert = false;
         }
 
+        if(price < 0) {
+            input_price.setError("Pice must be higher than 0");
+            insert = false;
+        }
+
         DecimalFormat df = new DecimalFormat("#.##");
         price = Float.parseFloat(df.format(price));
 
