@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,7 +12,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,13 +24,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mp08_store.db.DBDatasource;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private DBDatasource db;
     private ItemListAdapter listAdapter;
@@ -50,16 +49,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Cursor c = this.db.getFilteredStore("", false);
         this.listAdapter = new ItemListAdapter(this, c);
-        ListView lst = (ListView)this.findViewById(R.id.lv_items);
+        ListView lst = (ListView) this.findViewById(R.id.lv_items);
         lst.setAdapter(this.listAdapter);
         lst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(!inSelection)openEditItemActivity((int)id);
+                if (!inSelection) openEditItemActivity((int) id);
                 else {
-                    toggleSelected((int)id);
-                    if(selected.size() < 1) {
+                    toggleSelected((int) id);
+                    if (selected.size() < 1) {
                         inSelection = false;
                         invalidateOptionsMenu();
                     }
@@ -71,9 +70,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                if(!inSelection) {
+                if (!inSelection) {
                     selected = new ArrayList<String>();
-                    toggleSelected((int)id);
+                    toggleSelected((int) id);
                     inSelection = true;
                     invalidateOptionsMenu();
                 }
@@ -82,16 +81,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         findViewById(R.id.img_btn_filter_remove).setOnClickListener(this);
+        findViewById(R.id.btn_add).setOnClickListener(this);
+        findViewById(R.id.btn_create).setOnClickListener(this);
+        findViewById(R.id.btn_stock_in).setOnClickListener(this);
+        findViewById(R.id.btn_stock_out).setOnClickListener(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void load() {
         String filter_info = "All";
         boolean hasSearch = !this.searchFilter.isEmpty();
-        if(hasSearch || this.stockFilter) {
+        if (hasSearch || this.stockFilter) {
             filter_info = (hasSearch ? '"' + this.searchFilter + '"' : "") + (this.stockFilter ? ((hasSearch ? " and " : "") + "Out of stock") : "");
         }
-        ((TextView)this.findViewById(R.id.text_filters)).setText(filter_info);
+        ((TextView) this.findViewById(R.id.text_filters)).setText(filter_info);
         this.load(this.searchFilter, this.stockFilter);
     }
 
@@ -110,8 +113,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void toggleSelected(int id) {
-        String str_id = "id"+id;
-        for(int i = 0; i < this.selected.size(); i++) {
+        String str_id = "id" + id;
+        for (int i = 0; i < this.selected.size(); i++) {
             String it = this.selected.get(i);
             if (it.equals(str_id)) {
                 this.selected.remove(i);
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        if(this.inSelection) {
+        if (this.inSelection) {
             menu.findItem(R.id.button_delete).setVisible(true);
         } else {
             menu.findItem(R.id.button_delete).setVisible(false);
@@ -180,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void deleteSelectedItems() {
-        for(String it : this.selected) {
+        for (String it : this.selected) {
             int id = Integer.parseInt(it.substring(2));
             this.db.deleteItem(id);
         }
@@ -207,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     val = edtValor.getText().toString();
                     searchFilter = val;
                     load();
-                } catch(Exception e) {
+                } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "Input needs to be a number!", Toast.LENGTH_SHORT).show();
                 }
 
@@ -227,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (which){
+                switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
                         deleteSelectedItems();
                         break;
@@ -241,15 +244,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("All selected items will be deleted").setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener).show();    }
+                .setNegativeButton("No", dialogClickListener).show();
+    }
 
+    @SuppressLint("RestrictedApi")
+    private void toggleActionButtonMenu() {
+        FloatingActionButton btn_create = (FloatingActionButton) findViewById(R.id.btn_create);
+        if(btn_create.getVisibility() == View.VISIBLE) {
+            this.setActionButtonMenuVisibility(View.INVISIBLE);
+        } else {
+            this.setActionButtonMenuVisibility(View.VISIBLE);
+        }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void setActionButtonMenuVisibility(int val) {
+        FloatingActionButton btn_create = (FloatingActionButton) findViewById(R.id.btn_create);
+        FloatingActionButton btn_stock_in = (FloatingActionButton) findViewById(R.id.btn_stock_in);
+        FloatingActionButton btn_stock_out = (FloatingActionButton) findViewById(R.id.btn_stock_out);
+        TextView label_create = (TextView) findViewById(R.id.label_create);
+        TextView label_stock_in = (TextView) findViewById(R.id.label_stock_in);
+        TextView label_stock_out = (TextView) findViewById(R.id.label_stock_out);
+        btn_create.setVisibility(val);
+        btn_stock_in.setVisibility(val);
+        btn_stock_out.setVisibility(val);
+        label_create.setVisibility(val);
+        label_stock_in.setVisibility(val);
+        label_stock_out.setVisibility(val);
+    }
+
+    @SuppressLint("NonConstantResourceId")
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.img_btn_filter_remove) {
-            this.stockFilter = false;
-            this.searchFilter = "";
-            this.load();
+        switch (v.getId()) {
+            case R.id.img_btn_filter_remove:
+                this.stockFilter = false;
+                this.searchFilter = "";
+                this.load();
+                break;
+            case R.id.btn_add:
+                this.toggleActionButtonMenu();
+                break;
+            case R.id.btn_create:
+                this.openCreateItemActivity();
+                this.toggleActionButtonMenu();
+                break;
         }
     }
 }

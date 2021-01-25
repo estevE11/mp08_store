@@ -6,6 +6,98 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_stock_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:scaleX="0.75"
+        android:scaleY="0.75"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn_stock_in"
+        app:layout_constraintEnd_toEndOf="@+id/btn_stock_in"
+        app:srcCompat="@drawable/ic_baseline_call_made_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_stock_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:scaleX="0.75"
+        android:scaleY="0.75"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn_create"
+        app:layout_constraintEnd_toEndOf="@+id/btn_create"
+        app:srcCompat="@drawable/ic_baseline_call_received_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:scaleX="0.75"
+        android:scaleY="0.75"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn_add"
+        app:layout_constraintEnd_toEndOf="@+id/btn_add"
+        app:srcCompat="@drawable/ic_baseline_create_new_folder_24" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
+
+    <TextView
+        android:id="@+id/label_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@color/cardview_dark_background"
+        android:padding="10px"
+        android:text="Create item"
+        android:textColor="@color/cardview_light_background"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_create"
+        app:layout_constraintEnd_toStartOf="@+id/btn_create"
+        app:layout_constraintTop_toTopOf="@+id/btn_create" />
+
+    <TextView
+        android:id="@+id/label_stock_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@color/cardview_dark_background"
+        android:padding="10px"
+        android:text="Stock in"
+        android:textColor="@color/cardview_light_background"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_stock_in"
+        app:layout_constraintEnd_toStartOf="@+id/btn_stock_in"
+        app:layout_constraintTop_toTopOf="@+id/btn_stock_in"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/label_stock_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@color/cardview_dark_background"
+        android:padding="10px"
+        android:text="Stock out"
+        android:textColor="@color/cardview_light_background"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_stock_out"
+        app:layout_constraintEnd_toStartOf="@+id/btn_stock_out"
+        app:layout_constraintTop_toTopOf="@+id/btn_stock_out" />
+
     <ListView
         android:id="@+id/lv_items"
         android:layout_width="0dp"
