@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 public class DBHelper extends SQLiteOpenHelper {
     // database version
-    private static final int database_VERSION = 2;
+    private static final int database_VERSION = 3;
 
     // database name
     private static final String database_NAME = "store";
@@ -26,8 +26,15 @@ public class DBHelper extends SQLiteOpenHelper {
                         "price REAL NOT NULL," +
                         "stock REAL NOT NULL DEFAULT '0')";
 
-        db.execSQL(CREATE_TODOLIST);
+        String CREATE_MOVEMENTS =
+                "CREATE TABLE movements ( _id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "code TEXT NOT NULL," +
+                        "day DATE NOT NULL," +
+                        "quantity INT NOT NULL," +
+                        "type CHAR NOT NULL CHECK(type = 'E' OR type = 'S'))";
 
+        db.execSQL(CREATE_TODOLIST);
+        db.execSQL(CREATE_MOVEMENTS);
     }
 
     @Override

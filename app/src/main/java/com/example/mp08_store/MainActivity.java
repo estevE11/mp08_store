@@ -173,6 +173,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
+    private void openHistoryManagerActivity(int type) {
+        Bundle b = new Bundle();
+        b.putInt("type", type);
+        Intent intent = new Intent(getApplicationContext(), ItemHistoryManager.class);
+        intent.putExtras(b);
+        startActivity(intent);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void turnOffSelectedMode() {
         this.inSelection = false;
@@ -288,6 +296,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_create:
                 this.openCreateItemActivity();
+                this.toggleActionButtonMenu();
+                break;
+            case R.id.btn_stock_in:
+                this.openHistoryManagerActivity(0);
+                this.toggleActionButtonMenu();
+                break;
+            case R.id.btn_stock_out:
+                this.openHistoryManagerActivity(1);
                 this.toggleActionButtonMenu();
                 break;
         }
