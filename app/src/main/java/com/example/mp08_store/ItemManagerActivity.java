@@ -74,13 +74,11 @@ public class ItemManagerActivity extends AppCompatActivity {
 
         EditText input_code = ((EditText)findViewById(R.id.input_code));
         EditText input_desc = ((EditText)findViewById(R.id.input_desc));
-        EditText input_stock = ((EditText)findViewById(R.id.input_stock));
         EditText input_price = ((EditText)findViewById(R.id.input_price));
         Spinner input_spinner_family = ((Spinner)findViewById(R.id.input_spinner_family));
 
         input_code.setText(c_item.getString(1));
         input_desc.setText(c_item.getString(2));
-        input_stock.setText(c_item.getString(5));
         input_price.setText(c_item.getString(4));
 
         input_code.setInputType(InputType.TYPE_NULL);
@@ -108,9 +106,7 @@ public class ItemManagerActivity extends AppCompatActivity {
         String family = ((Spinner)findViewById(R.id.input_spinner_family)).getSelectedItem().toString();
         String code = input_code.getText().toString();
         String price_val = input_price.getText().toString();
-        String stock_val = input_stock.getText().toString();
 
-        int stock = 0;
         float price = 0;
 
         if(price_val.isEmpty()) {
@@ -123,17 +119,6 @@ public class ItemManagerActivity extends AppCompatActivity {
                 insert = false;
             } else if(price > 99999) {
                 input_price.setError("Pice must not be higher than 99999");
-                insert = false;
-            }
-        }
-
-        if(stock_val.isEmpty()) {
-            input_stock.setError("Price must contain a number!");
-            insert = false;
-        } else {
-            stock = Integer.parseInt(stock_val);
-            if(stock < 0 && !editMode) {
-                ((EditText)findViewById(R.id.input_stock)).setError("Stock must be 0 or higher");
                 insert = false;
             }
         }
@@ -166,7 +151,7 @@ public class ItemManagerActivity extends AppCompatActivity {
         res.putString("code", code);
         res.putString("desc", desc);
         res.putFloat("price", price);
-        res.putInt("stock", stock);
+        res.putInt("stock", 0);
         res.putString("family", family);
         return res;
     }

@@ -83,6 +83,13 @@ public class DBDatasource {
         return dbR.rawQuery("select _id, code, description, family, price, stock from store where _id=" + (id),null);
     }
 
+    public int getStockById(int id) {
+        Cursor c = dbR.rawQuery("select stock from store where _id=" + (id),null);
+        c.moveToFirst();
+        int stock = c.getInt(0);
+        return stock;
+    }
+
     // ******************
     // Funciones de manipualación de datos
     // ******************
@@ -112,5 +119,14 @@ public class DBDatasource {
 
     public void deleteItem(int id) {
         dbW.delete("store", "_id=?", new String[] { String.valueOf(id) });
+    }
+
+    public void changeStock(int id, int stockDiff) {
+        int currStock = this.getStockById(id);
+        // Creem una nova tasca i retornem el id crear per si el necessiten
+        ContentValues values = new ContentValues();
+        values.put("stock", currStock + stockDiff);
+
+        dbW.update("store", values, "_id=?", new String[] { String.valueOf(id) });
     }
 }

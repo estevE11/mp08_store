@@ -26,18 +26,6 @@
         app:layout_constraintStart_toStartOf="@+id/input_spinner_family" />
 
     <EditText
-        android:id="@+id/input_stock"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:ems="15"
-        android:inputType="numberSigned|number"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/input_price" />
-
-    <EditText
         android:id="@+id/input_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -67,15 +55,6 @@
         app:layout_constraintBottom_toTopOf="@+id/input_price"
         app:layout_constraintStart_toStartOf="@+id/input_price" />
 
-    <TextView
-        android:id="@+id/label_stock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:text="Stock"
-        app:layout_constraintBottom_toTopOf="@+id/input_stock"
-        app:layout_constraintStart_toStartOf="@+id/input_stock" />
-
     <EditText
         android:id="@+id/input_code"
         android:layout_width="0dp"
@@ -96,7 +75,7 @@
         android:visibility="visible"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/input_stock" />
+        app:layout_constraintTop_toBottomOf="@+id/input_price" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"

@@ -299,11 +299,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this.toggleActionButtonMenu();
                 break;
             case R.id.btn_stock_in:
-                this.openHistoryManagerActivity(0);
+                this.openHistoryManagerActivity(1);
                 this.toggleActionButtonMenu();
                 break;
             case R.id.btn_stock_out:
-                this.openHistoryManagerActivity(1);
+                this.openHistoryManagerActivity(0);
                 this.toggleActionButtonMenu();
                 break;
         }
