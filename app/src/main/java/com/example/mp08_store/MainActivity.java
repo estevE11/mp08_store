@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this.turnOffSelectedMode();
                 return false;
             case R.id.button_save:
-                this.openCreateItemActivity();
+                this.openStockHistotyActivity();
                 return false;
             case R.id.button_delete:
                 this.openDeleteAlert();
@@ -178,6 +178,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         b.putInt("type", type);
         Intent intent = new Intent(getApplicationContext(), ItemHistoryManager.class);
         intent.putExtras(b);
+        startActivity(intent);
+    }
+
+    private void openStockHistotyActivity() {
+        Intent intent = new Intent(getApplicationContext(), StockHistoryActivity.class);
         startActivity(intent);
     }
 
@@ -299,11 +304,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this.toggleActionButtonMenu();
                 break;
             case R.id.btn_stock_in:
-                this.openHistoryManagerActivity(1);
+                this.openHistoryManagerActivity(0);
                 this.toggleActionButtonMenu();
                 break;
             case R.id.btn_stock_out:
-                this.openHistoryManagerActivity(0);
+                this.openHistoryManagerActivity(1);
                 this.toggleActionButtonMenu();
                 break;
         }

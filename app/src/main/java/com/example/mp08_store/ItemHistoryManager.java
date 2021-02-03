@@ -4,10 +4,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,8 +40,8 @@ public class ItemHistoryManager extends AppCompatActivity implements View.OnClic
         int type_n = b.getInt("type");
         this.type = type_n == 0 ? 'E' : 'S';
 
-        if (this.type == 'E') this.setTitle("Stock out");
-        else this.setTitle("Stock in");
+        if (this.type == 'E') this.setTitle("Stock in");
+        else this.setTitle("Stock out");
 
         this.fillSpinner();
 
@@ -58,7 +60,21 @@ public class ItemHistoryManager extends AppCompatActivity implements View.OnClic
 
     private void save() {
         Spinner spinner_code = (Spinner)findViewById(R.id.spinner_code);
-        int id = spinner_code.getSelectedItemPosition();
+        EditText input_quantity = (EditText) findViewById(R.id.input_quantity);
+        String code = spinner_code.getSelectedItem().toString();
+        String date = ((EditText) findViewById(R.id.input_date)).getText().toString();
+        int quant = Integer.parseInt(input_quantity.getText().toString());
+        if(quant < 1) {
+            input_quantity.setError("Quantity must be higher than 0");
+            return;
+        }
+        this.db.insertStockChange(code, date, quant, this.type);
+        this.openMainActivity();
+    }
+
+    private void openMainActivity() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 
     @Override

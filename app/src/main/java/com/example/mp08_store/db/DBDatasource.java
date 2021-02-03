@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Bundle;
-import android.util.Log;
 
 public class DBDatasource {
     public static final String STORE_TABLE_NAME = "store";
@@ -90,6 +88,23 @@ public class DBDatasource {
         return stock;
     }
 
+    public int getStockByCode(String code) {
+        Cursor c = dbR.rawQuery("select stock from store where code='" + (code) + "'",null);
+        c.moveToFirst();
+        int stock = c.getInt(0);
+        return stock;
+    }
+
+    public Cursor getStockChangeHistory() {
+        return dbR.query("movements", new String[]{"_id", "code","day","quantity","type"},
+                null, null,
+                null, null, STORE_CODE);
+    }
+
+    public Cursor getStockChangeHistoryByCode(String code) {
+        return dbR.rawQuery("select * from movements where code='" + code + "'",null);
+    }
+
     // ******************
     // Funciones de manipualación de datos
     // ******************
@@ -121,12 +136,25 @@ public class DBDatasource {
         dbW.delete("store", "_id=?", new String[] { String.valueOf(id) });
     }
 
-    public void changeStock(int id, int stockDiff) {
-        int currStock = this.getStockById(id);
-        // Creem una nova tasca i retornem el id crear per si el necessiten
+    public long insertStockChange(String code, String date, int stockDiff, char type) {
+        ContentValues values = new ContentValues();
+        values.put("code", code);
+        values.put("day", date);
+        values.put("quantity", date);
+        values.put("type", String.valueOf(type));
+
+        long res = dbW.insert("movements",null,values);
+
+        this.changeStock(code, type == 'E' ? stockDiff : stockDiff*-1);
+
+        return res;
+    }
+
+    public void changeStock(String code, int stockDiff) {
+        int currStock = this.getStockByCode(code);
         ContentValues values = new ContentValues();
         values.put("stock", currStock + stockDiff);
 
-        dbW.update("store", values, "_id=?", new String[] { String.valueOf(id) });
+        dbW.update("store", values, "code=?", new String[] { code });
     }
 }

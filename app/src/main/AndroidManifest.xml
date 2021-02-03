@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ItemHistoryManager"></activity>
+        <activity android:name=".StockHistoryActivity"></activity>
+        <activity android:name=".ItemHistoryManager" />
         <activity
             android:name=".ItemManagerActivity"
             android:label="@string/title_activity_item_manager"
