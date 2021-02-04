@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this.openDialogSearch();
                 this.turnOffSelectedMode();
                 return false;
-            case R.id.button_save:
+            case R.id.button_filter_rm:
                 this.openStockHistotyActivity();
                 return false;
             case R.id.button_delete:

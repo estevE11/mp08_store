@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ItemManagerActivity">
     <item
-        android:id="@+id/button_save"
+        android:id="@+id/button_filter_rm"
         android:icon="@drawable/ic_baseline_save_24"
         android:title="Item"
         app:showAsAction="always" />

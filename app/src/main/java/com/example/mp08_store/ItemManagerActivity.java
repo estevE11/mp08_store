@@ -177,7 +177,7 @@ public class ItemManagerActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.button_save:
+            case R.id.button_filter_rm:
                 this.save();
                 return false;
         }

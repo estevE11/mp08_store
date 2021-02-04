@@ -5,11 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -86,7 +84,7 @@ public class ItemHistoryManager extends AppCompatActivity implements View.OnClic
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.button_save:
+            case R.id.button_filter_rm:
                 this.save();
                 return false;
         }

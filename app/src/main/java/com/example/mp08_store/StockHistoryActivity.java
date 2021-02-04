@@ -10,9 +10,10 @@ import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -22,11 +23,7 @@ import android.widget.TextView;
 import com.example.mp08_store.db.DBDatasource;
 import com.example.mp08_store.utils.Date;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.LinkedList;
-
-import javax.sql.DataSource;
 
 public class StockHistoryActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -41,7 +38,7 @@ public class StockHistoryActivity extends AppCompatActivity implements View.OnCl
 
         final Bundle b = this.getIntent().getExtras();
 
-        this.setTitle("Store stock movement history");
+        this.setTitle("Stock movement history");
 
         this.db = new DBDatasource(this);
 
@@ -99,6 +96,23 @@ public class StockHistoryActivity extends AppCompatActivity implements View.OnCl
             load();
             }
         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_stock_history, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.button_filter_rm:
+                ((EditText)findViewById(R.id.input_date_start)).setText("--/--/----");
+                ((EditText)findViewById(R.id.input_date_end)).setText("--/--/----");
+                this.load();
+                return false;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

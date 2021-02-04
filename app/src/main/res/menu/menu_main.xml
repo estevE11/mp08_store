@@ -23,7 +23,7 @@
         android:title="Item"
         app:showAsAction="always" />
     <item
-        android:id="@+id/button_save"
+        android:id="@+id/button_filter_rm"
         android:icon="@drawable/ic_baseline_collections_bookmark_24"
         android:title="Item"
         app:showAsAction="always" />

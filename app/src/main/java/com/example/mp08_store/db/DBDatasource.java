@@ -174,7 +174,9 @@ public class DBDatasource {
     }
 
     public void deleteItem(int id) {
+        String code = this.getCodeById(id);
         dbW.delete("store", "_id=?", new String[] { String.valueOf(id) });
+        dbW.delete("movements", "code=?", new String[] { String.valueOf(code) });
     }
 
     public long insertStockChange(String code, Date date, int stockDiff, char type) {
