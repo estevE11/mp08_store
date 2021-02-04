@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.mp08_store.db.DBDatasource;
+import com.example.mp08_store.utils.Date;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +69,7 @@ public class ItemHistoryManager extends AppCompatActivity implements View.OnClic
             input_quantity.setError("Quantity must be higher than 0");
             return;
         }
-        this.db.insertStockChange(code, date, quant, this.type);
+        this.db.insertStockChange(code, Date.parse(date, null), quant, this.type);
         this.openMainActivity();
     }
 

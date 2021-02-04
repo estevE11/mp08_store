@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.mp08_store.utils.Date;
+
 import java.util.ArrayList;
 
 public class DBDatasource {
@@ -98,7 +100,7 @@ public class DBDatasource {
         return stock;
     }
 
-    public Cursor getStockChangeHistoryByIds(ArrayList<String> ids) {
+    public Cursor getStockChangeHistoryByIds(ArrayList<String> ids, Date start_date, Date end_date) {
         boolean filter = ids.size() > 0;
         ArrayList<String> codes = new ArrayList<String>();
         StringBuilder add = new StringBuilder();
@@ -113,9 +115,14 @@ public class DBDatasource {
             add.append("code='" + codes.get(codes.size()-1) + "'");
         }
 
-        Log.v("roger", add + "");
+        boolean sd = start_date != null;
+        boolean ed = end_date != null;
+        String date_filter = (sd ? ("day >= '" + start_date.getDateSql(null) + "'" + (ed ? " and day <= '" + end_date.getDateSql(null) + "'" : "")) : "");
 
-        return dbR.rawQuery("select * from movements" + (filter ? " where " + add : ""),null);
+        Log.v("roger", "buenas");
+        Log.v("roger", date_filter);
+
+        return dbR.rawQuery("select * from movements" + (filter || sd ? " where " + add : "") + (sd ? (filter ? " and " : "") + date_filter : ""),null);
     }
 
     public Cursor getStockChangeHistory() {
@@ -170,10 +177,10 @@ public class DBDatasource {
         dbW.delete("store", "_id=?", new String[] { String.valueOf(id) });
     }
 
-    public long insertStockChange(String code, String date, int stockDiff, char type) {
+    public long insertStockChange(String code, Date date, int stockDiff, char type) {
         ContentValues values = new ContentValues();
         values.put("code", code);
-        values.put("day", date);
+        values.put("day", date.getDateSql(null));
         values.put("quantity", stockDiff);
         values.put("type", String.valueOf(type));
 

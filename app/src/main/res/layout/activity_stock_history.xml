@@ -14,13 +14,15 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <EditText
-        android:id="@+id/editTextDate"
+        android:id="@+id/input_date_start"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:inputType="date"
         android:text="--/--/----"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
@@ -28,13 +30,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextDate2"
+        android:id="@+id/input_date_end"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:inputType="date"
         android:text="--/--/----"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDate"
+        app:layout_constraintTop_toBottomOf="@+id/input_date_start"
         tools:layout_editor_absoluteX="51dp">
 
     </ListView>
@@ -56,15 +60,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start"
-        app:layout_constraintBottom_toTopOf="@+id/editTextDate"
-        app:layout_constraintStart_toStartOf="@+id/editTextDate" />
+        app:layout_constraintBottom_toTopOf="@+id/input_date_start"
+        app:layout_constraintStart_toStartOf="@+id/input_date_start" />
 
     <TextView
         android:id="@+id/label_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="End"
-        app:layout_constraintBottom_toTopOf="@+id/editTextDate2"
-        app:layout_constraintStart_toStartOf="@+id/editTextDate2" />
+        app:layout_constraintBottom_toTopOf="@+id/input_date_end"
+        app:layout_constraintStart_toStartOf="@+id/input_date_end" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
