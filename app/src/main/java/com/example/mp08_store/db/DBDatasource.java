@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import java.util.ArrayList;
 
 public class DBDatasource {
     public static final String STORE_TABLE_NAME = "store";
@@ -95,14 +98,46 @@ public class DBDatasource {
         return stock;
     }
 
+    public Cursor getStockChangeHistoryByIds(ArrayList<String> ids) {
+        boolean filter = ids.size() > 0;
+        ArrayList<String> codes = new ArrayList<String>();
+        StringBuilder add = new StringBuilder();
+        if(filter) {
+            for(String id : ids) {
+                codes.add(this.getCodeById(Integer.parseInt(String.valueOf(id.charAt(2)))));
+            }
+            for(int i = 0; i < codes.size()-1; i++) {
+                String str = "code='" + codes.get(i) + "' or ";
+                add.append(str);
+            }
+            add.append("code='" + codes.get(codes.size()-1) + "'");
+        }
+
+        Log.v("roger", add + "");
+
+        return dbR.rawQuery("select * from movements" + (filter ? " where " + add : ""),null);
+    }
+
     public Cursor getStockChangeHistory() {
         return dbR.query("movements", new String[]{"_id", "code","day","quantity","type"},
                 null, null,
-                null, null, STORE_CODE);
+                null, null, "day desc");
     }
 
     public Cursor getStockChangeHistoryByCode(String code) {
         return dbR.rawQuery("select * from movements where code='" + code + "'",null);
+    }
+
+    public int getIdByCode(String code) {
+        Cursor c = dbR.rawQuery("select _id from store where code='" + (code) + "'",null);
+        c.moveToFirst();
+        return c.getInt(0);
+    }
+
+    public String getCodeById(int id) {
+        Cursor c = dbR.rawQuery("select code from store where _id=" + id,null);
+        c.moveToFirst();
+        return c.getString(0);
     }
 
     // ******************
@@ -127,7 +162,6 @@ public class DBDatasource {
         values.put("description", desc);
         values.put("family", family);
         values.put("price", price);
-        values.put("stock", stock);
 
         dbW.update("store", values, "_id=?", new String[] { String.valueOf(id) });
     }
@@ -140,7 +174,7 @@ public class DBDatasource {
         ContentValues values = new ContentValues();
         values.put("code", code);
         values.put("day", date);
-        values.put("quantity", date);
+        values.put("quantity", stockDiff);
         values.put("type", String.valueOf(type));
 
         long res = dbW.insert("movements",null,values);

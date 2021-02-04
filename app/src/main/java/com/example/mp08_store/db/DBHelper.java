@@ -5,9 +5,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import com.example.mp08_store.MainActivity;
+
 public class DBHelper extends SQLiteOpenHelper {
     // database version
-    private static final int database_VERSION = 3;
+    private static final int database_VERSION = 4;
 
     // database name
     private static final String database_NAME = "store";
@@ -39,7 +41,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // De moment no fem res
-
+        //Toast.makeText(MainActivity.class, "Database updated v" + oldVersion + " > " + newVersion, Toast.LENGTH_SHORT).show();
     }
 }

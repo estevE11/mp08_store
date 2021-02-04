@@ -183,6 +183,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void openStockHistotyActivity() {
         Intent intent = new Intent(getApplicationContext(), StockHistoryActivity.class);
+        Bundle b = new Bundle();
+        b.putStringArrayList("selected", this.selected);
+        intent.putExtras(b);
         startActivity(intent);
     }
 
