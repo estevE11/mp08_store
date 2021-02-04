@@ -30,6 +30,7 @@ public class StockHistoryActivity extends AppCompatActivity implements View.OnCl
     private DBDatasource db;
     private StockHistoryItemListAdapter listAdapter;
     private ArrayList<String> selected;
+    private String orderBy = "desc";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class StockHistoryActivity extends AppCompatActivity implements View.OnCl
         this.db = new DBDatasource(this);
 
         this.selected = b.getStringArrayList("selected");
-        Cursor c = this.db.getStockChangeHistoryByIds(this.selected, null, null);
+        Cursor c = this.db.getStockChangeHistoryByIds(this.selected, null, null, this.orderBy);
         this.listAdapter = new StockHistoryItemListAdapter(this, c);
         ListView lst = (ListView) this.findViewById(R.id.lv_stock_history);
         lst.setAdapter(this.listAdapter);
@@ -68,7 +69,7 @@ public class StockHistoryActivity extends AppCompatActivity implements View.OnCl
             end_date = null;
         }
 
-        Cursor c = this.db.getStockChangeHistoryByIds(this.selected, start_date, end_date);
+        Cursor c = this.db.getStockChangeHistoryByIds(this.selected, start_date, end_date, this.orderBy);
         this.listAdapter.changeCursor(c);
         this.listAdapter.notifyDataSetChanged();
     }
@@ -109,6 +110,11 @@ public class StockHistoryActivity extends AppCompatActivity implements View.OnCl
             case R.id.button_filter_rm:
                 ((EditText)findViewById(R.id.input_date_start)).setText("--/--/----");
                 ((EditText)findViewById(R.id.input_date_end)).setText("--/--/----");
+                this.load();
+                return false;
+            case R.id.button_filter_date:
+                if(this.orderBy.equals("desc")) this.orderBy = "asc";
+                else if(this.orderBy.equals("asc")) this.orderBy = "desc";
                 this.load();
                 return false;
         }

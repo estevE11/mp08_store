@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/button_filter_date"
+        android:icon="@drawable/ic_baseline_swap_vert_24"
+        android:title="Item"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/button_filter_rm"
         android:icon="@drawable/ic_baseline_filter_alt_24"
         android:title="Item"

@@ -100,7 +100,7 @@ public class DBDatasource {
         return stock;
     }
 
-    public Cursor getStockChangeHistoryByIds(ArrayList<String> ids, Date start_date, Date end_date) {
+    public Cursor getStockChangeHistoryByIds(ArrayList<String> ids, Date start_date, Date end_date, String orderBy) {
         boolean filter = ids.size() > 0;
         ArrayList<String> codes = new ArrayList<String>();
         StringBuilder add = new StringBuilder();
@@ -122,7 +122,7 @@ public class DBDatasource {
         Log.v("roger", "buenas");
         Log.v("roger", date_filter);
 
-        return dbR.rawQuery("select * from movements" + (filter || sd ? " where " + add : "") + (sd ? (filter ? " and " : "") + date_filter : "") + " order by day desc",null);
+        return dbR.rawQuery("select * from movements" + (filter || sd ? " where " + add : "") + (sd ? (filter ? " and " : "") + date_filter : "") + " order by day " + orderBy,null);
     }
 
     public Cursor getStockChangeHistory() {
