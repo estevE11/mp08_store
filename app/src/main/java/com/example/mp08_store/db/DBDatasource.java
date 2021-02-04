@@ -122,7 +122,7 @@ public class DBDatasource {
         Log.v("roger", "buenas");
         Log.v("roger", date_filter);
 
-        return dbR.rawQuery("select * from movements" + (filter || sd ? " where " + add : "") + (sd ? (filter ? " and " : "") + date_filter : ""),null);
+        return dbR.rawQuery("select * from movements" + (filter || sd ? " where " + add : "") + (sd ? (filter ? " and " : "") + date_filter : "") + " order by day desc",null);
     }
 
     public Cursor getStockChangeHistory() {
