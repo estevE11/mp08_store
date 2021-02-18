@@ -7,13 +7,13 @@
     tools:context=".WeatherActivity">
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/input_location"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintEnd_toStartOf="@+id/btn_search_weather"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,11 +32,11 @@
         app:layout_constraintGuide_percent="0.85" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/btn_search_weather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@+id/guideline10"
-        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName"
+        app:layout_constraintTop_toTopOf="@+id/input_location"
         app:srcCompat="@drawable/ic_baseline_search_24_dark" />
 
     <TextView
@@ -44,6 +44,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Location"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName" />
+        app:layout_constraintBottom_toTopOf="@+id/input_location"
+        app:layout_constraintStart_toStartOf="@+id/input_location" />
+
+    <TextView
+        android:id="@+id/txt_weather_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/input_location" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
