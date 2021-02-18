@@ -156,12 +156,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_delete:
                 this.openDeleteAlert();
                 return false;
+            case R.id.button_weather:
+                this.openWeatherActivity();
+                return false;
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void openCreateItemActivity() {
         Intent intent = new Intent(getApplicationContext(), ItemManagerActivity.class);
+        startActivity(intent);
+    }
+
+    private void openWeatherActivity() {
+        Intent intent = new Intent(getApplicationContext(), WeatherActivity.class);
         startActivity(intent);
     }
 
