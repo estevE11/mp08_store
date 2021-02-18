@@ -3,13 +3,12 @@ package com.example.mp08_store;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.mp08_store.weather.WeatherData;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +29,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                if(statusCode != 200) return;
                 JSONObject data = null;
                 String str = new String(responseBody);
 
@@ -39,7 +39,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
                     e.printStackTrace();
                 }
                 try {
-                    fillData(((JSONObject)((JSONArray) data.get("weather")).get(0)));
+                    fillData(new WeatherData(data));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -52,8 +52,7 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
-    private void fillData(JSONObject data) throws JSONException {
-        String main = (String) data.get("main");
-        ((TextView) findViewById(R.id.txt_weather_main)).setText(main);
+    private void fillData(WeatherData data) throws JSONException {;
+        ((TextView) findViewById(R.id.txt_weather_main)).setText(data.getMain());
     }
 }
