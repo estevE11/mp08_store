@@ -6,36 +6,75 @@
     android:layout_height="match_parent"
     tools:context=".WeatherActivity">
 
+    <TextView
+        android:id="@+id/label_clouds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Clouds"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/guide_center"
+        app:layout_constraintTop_toBottomOf="@+id/txt_ptemp" />
+
+    <TextView
+        android:id="@+id/txt_visibility"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0 km"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/label_visibility"
+        app:layout_constraintTop_toBottomOf="@+id/label_visibility" />
+
+    <TextView
+        android:id="@+id/label_visibility"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Visibility"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/gide_left"
+        app:layout_constraintTop_toBottomOf="@+id/txt_windspeed" />
+
     <EditText
         android:id="@+id/input_location"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/btn_search_weather"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/gide_left"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline8"
+        android:id="@+id/gide_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.1" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline10"
+        android:id="@+id/guide_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.9" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
     <ImageButton
         android:id="@+id/btn_search_weather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintEnd_toStartOf="@+id/guide_right"
         app:layout_constraintTop_toTopOf="@+id/input_location"
         app:srcCompat="@drawable/ic_baseline_search_24_dark" />
 
@@ -51,10 +90,179 @@
         android:id="@+id/txt_weather_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="No info"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/gide_left"
+        app:layout_constraintTop_toBottomOf="@+id/txt_temp" />
+
+    <TextView
+        android:id="@+id/txt_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="0º"
+        android:textSize="36sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/gide_left"
+        app:layout_constraintTop_toBottomOf="@+id/txt_location" />
+
+    <TextView
+        android:id="@+id/label_preassure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Preassure"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/guide_center"
+        app:layout_constraintTop_toBottomOf="@+id/txt_weather_main" />
+
+    <TextView
+        android:id="@+id/txt_preassure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0%"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/label_preassure"
+        app:layout_constraintTop_toBottomOf="@+id/label_preassure" />
+
+    <TextView
+        android:id="@+id/txt_temp_max"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="0º"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/txt_temp"
+        app:layout_constraintTop_toTopOf="@+id/txt_temp" />
+
+    <TextView
+        android:id="@+id/txt_temp_min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="0º"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_temp"
+        app:layout_constraintStart_toEndOf="@+id/txt_temp" />
+
+    <TextView
+        android:id="@+id/txt_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="La Roca del Valles"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/gide_left"
+        app:layout_constraintTop_toBottomOf="@+id/input_location" />
+
+    <TextView
+        android:id="@+id/label_hum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Humidity"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/txt_location"
+        app:layout_constraintTop_toBottomOf="@+id/txt_weather_main" />
+
+    <TextView
+        android:id="@+id/txt_humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0%"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/label_hum"
+        app:layout_constraintTop_toBottomOf="@+id/label_hum" />
+
+    <TextView
+        android:id="@+id/label_windspeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Wind speed"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/gide_left"
+        app:layout_constraintTop_toBottomOf="@+id/txt_humidity" />
+
+    <TextView
+        android:id="@+id/txt_windspeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0 km/h"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/label_windspeed"
+        app:layout_constraintTop_toBottomOf="@+id/label_windspeed" />
+
+    <TextView
+        android:id="@+id/label_ptemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Perceived temperature"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/label_preassure"
+        app:layout_constraintTop_toTopOf="@+id/label_windspeed" />
+
+    <TextView
+        android:id="@+id/txt_ptemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0º"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/label_ptemp"
+        app:layout_constraintTop_toBottomOf="@+id/label_ptemp" />
+
+    <TextView
+        android:id="@+id/txt_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="2dp"
+        android:text="Spain"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_location"
+        app:layout_constraintStart_toEndOf="@+id/txt_location"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/txt_clouds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/label_clouds"
+        app:layout_constraintTop_toBottomOf="@+id/label_clouds" />
+
+    <ImageView
+        android:id="@+id/img_icon"
+        android:layout_width="100dp"
+        android:layout_height="96dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/guide_right"
+        app:layout_constraintTop_toBottomOf="@+id/txt_location"
+        app:srcCompat="@drawable/ic_baseline_brightness_5_24" />
+
+    <TextView
+        android:id="@+id/label_noinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline10"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        android:text="No info"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toStartOf="@+id/guide_right"
+        app:layout_constraintStart_toStartOf="@+id/gide_left"
         app:layout_constraintTop_toBottomOf="@+id/input_location" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

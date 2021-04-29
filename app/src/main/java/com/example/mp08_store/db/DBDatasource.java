@@ -142,6 +142,7 @@ public class DBDatasource {
     }
 
     public String getCodeById(int id) {
+        Log.v("esteve", id+"");
         Cursor c = dbR.rawQuery("select code from store where _id=" + id,null);
         c.moveToFirst();
         return c.getString(0);

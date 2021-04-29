@@ -41,17 +41,17 @@ public class WeatherData {
         this.visibility = (int) data.get("visibility");
 
         JSONObject main = (JSONObject) data.get("main");
-        this.temp = (double) main.get("temp");
-        this.feels = (double) main.get("feels_like");
-        this.temp_min = (double) main.get("temp_min");
-        this.temp_max = (double) main.get("temp_max");
+        this.temp = ((double) main.get("temp")) - 273.15;
+        this.feels = (double) main.get("feels_like") - 273.15;
+        this.temp_min = ((double) main.get("temp_min")) - 273.15;
+        this.temp_max = ((double) main.get("temp_max")) - 273.15;
         this.pressure = (int) main.get("pressure");
         this.humidity = (int) main.get("humidity");
 
         JSONObject wind = (JSONObject) data.get("wind");
         this.wind_speed = (double) wind.get("speed");
         this.wind_deg = (int) wind.get("deg");
-        this.wind_gust = (double) wind.get("gust");
+        //this.wind_gust = (double) wind.get("gust");
 
         this.clouds = ((int) ((JSONObject) data.get("clouds")).get("all"));
 
@@ -88,6 +88,10 @@ public class WeatherData {
 
     public String getIcon() {
         return icon;
+    }
+
+    public String getIconUrl() {
+        return "https://openweathermap.org/img/wn/" + this.icon + "@2x.png";
     }
 
     public String getBase() {
